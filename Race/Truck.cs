@@ -1,33 +1,38 @@
 namespace Race;
 
-public class Truck : Vehicule
+public class Truck : Vehicle
 {
+    /// <summary>
+    /// Constructor for Truck.
+    /// Same value for a basic vehicle. But
+    /// _acceleration should be equal to 0.3
+    /// _weight should be equal to 0.8
+    /// </summary>
+    /// <param name="speed"></param>
+    /// <param name="color"></param>
     public Truck(double speed, ConsoleColor color) : base(speed, color)
     {
-        _acceleration = 0.3;
-        _weight = 0.8;
+        throw new NotImplementedException();
     }
 
-    public override bool Move(uint newPosition, Track track)
+    /// <summary>
+    /// If the truck is broken down then decrease the _broke value by one.
+    /// If it isnt, then move the truck by changing his position to the
+    /// new position and check if the truck broke down.
+    /// The truck broke down if the luck value is below 20 (excluded).
+    /// </summary>
+    /// <param name="newPosition"></param>
+    /// <param name="track"></param>
+    /// <returns></returns>
+    public override bool Move(uint newPosition, Track track, int luck)
     {
-        if (_broke != 0)
-        {
-            _broke--;
-            return false;
-        }
-        position = newPosition;
-        return (Random.Shared.Next(100) < 20);
-    }
-
-    public override string ToString()
-    {
-        return "Truck";
+        throw new NotImplementedException();
     }
     
     public override void Print()
     {
         Console.ForegroundColor = color;
-        Console.Write(ToString());
+        Console.Write("Truck");
         Console.ForegroundColor = ConsoleColor.Black;
     }
 }

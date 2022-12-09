@@ -2,7 +2,7 @@ namespace Race;
 
 public class Race
 {
-    private Vehicule[] _racers;
+    private Vehicle[] _racers;
     private Track[] _track;
     public Random rand;
 
@@ -20,80 +20,45 @@ public class Race
         ConsoleColor.Yellow,
     };
 
+    /// <summary>
+    /// This is the constructor for the Race object.
+    /// It should initialize the race as follows.
+    /// Create nb_racers of vehicle FIRST.
+    /// To know whether a vehicle is a Car, a Bike or a Truck.
+    /// Use rand.Next(3), if the value is equal to 0, create a car,
+    /// if it is equal to 1, create a Bike, a Truck otherwise.
+    /// You should for every vehicle compute its speed.
+    /// To do so: use rand.NextDouble();
+    ///
+    /// Then! You should create your track.
+    /// Create an array of 30 track.
+    /// To know whether a track is a track or a turn.
+    /// Compute rand.Next(10), if the value is under 7 (excluded) then its a normal track.
+    /// Else its a Turn.
+    /// </summary>
+    /// <param name="nb_racers"></param>
+    /// <param name="rand"></param>
     public Race(int nb_racers, Random rand)
     {
-        _track = new Track[30];
-        _racers = new Vehicule[nb_racers];
-        this.rand = rand;
-        
-        for (uint i = 0; i < 10; i++)
-        {
-            if (rand.Next(10) < 7)
-                _track[i] = new Track();
-            else
-                _track[i] = new Turn();
-        }
-
-        for (uint i = 0; i < nb_racers; i++)
-        { 
-            double speed = rand.NextDouble();
-            switch (rand.Next(3))
-            {
-                case 0:
-                    _racers[i] = new Car(speed, ListColors[i%10])
-
-            ;
-                    break;
-                case 1:
-                    _racers[i] = new Bike(speed, ListColors[i%10]);
-                    break;
-                case 2:
-                    _racers[i] = new Truck(speed, ListColors[i%10]);
-                    break;
-            }
-        }
+        throw new NotImplementedException();
     }
 
-    protected Vehicule[] Max()
+    /// <summary>
+    /// Return a list of the car in first places. The length of the list should be set accordingly.
+    /// </summary>
+    /// <returns></returns>
+    protected Vehicle[] Max()
     {
-        uint max_position = 0;
-        uint nb_first = 0;
-        
-        // First, I check the furthest car
-        foreach (Vehicule vehicule in _racers)
-        {
-            if (vehicule.position > max_position)
-            {
-                max_position = vehicule.position;
-                nb_first = 1;
-            }
-            else if (vehicule.position == max_position)
-            {
-                nb_first += 1;
-            }
-        }
-
-        Vehicule[] furthest = new Vehicule[nb_first];
-        uint i = 0;
-        foreach (Vehicule vehicule in _racers)
-        {
-            if (vehicule.position == max_position)
-            {
-                furthest[i] = vehicule;
-                i++;
-            }
-        }
-        
-        return furthest;
+        throw new NotImplementedException();
     }
 
     private void PrintRacers()
     {
         string separator = "{ ";
-        foreach (Vehicule vehicule in _racers)
+        foreach (Vehicle vehicle in _racers)
         {
             Console.Write(separator);
-            vehicule.Print();
+            vehicle.Print();
             separator = ", ";
         }
 
@@ -102,7 +67,7 @@ public class Race
     
     private void Announcement()
     {
-        Vehicule[] first = Max();
+        Vehicle[] first = Max();
 
         if (first.Length == 1)
         {
@@ -129,62 +94,47 @@ public class Race
     
     private void FinalAnnouncement()
     {
-        Vehicule winner = Max()[0];
+        Vehicle winner = Max()[0];
 
         Console.Write("And the winner is... ");
         winner.Print();
         Console.WriteLine("! Congratulation to all racers");
     }
+
+    private void Crash(Vehicle vehicle1, Vehicle vehicle2)
+    {
+        vehicle2.BrokeDown();
+       Console.Write("Oh! Did you see ");
+       vehicle1.Print();
+       Console.Write(" just hit ");
+       vehicle2.Print();
+       Console.WriteLine(". He is now broke down.");
+        
+    }
     
+    /// <summary>
+    /// For each vehicle, move it on the track.
+    /// To do so, add to the position of the vehicle, (10 * its speed)
+    /// Add an extra (10 * its acceleration) if it is on a turn.
+    /// If the newposition of the car is equal or higher than the track length, the first car to get there won.
+    /// Else, use the Move() method (with luck = rand.Next(100)).
+    /// If Move() returns true, then the vehicle should broke down.
+    ///
+    ///
+    /// BONUS:
+    /// When every vehicle has moved check if some vehicle have the same position.
+    /// If they do, check their type.
+    /// If one of them is a Truck and the other one is a Bike or a Car,
+    ///     and if (rand.Next(10) == 1) call crash(truck, bike or car).
+    /// If one of them is a Car and the other one is a Bike,
+    ///     and if (rand.Next(10) == 1) call crash(car, bike)
+    ///
+    /// This function should return false if one of the Vehicle won the race. True otherwise.
+    /// </summary>
+    /// <returns></returns>
     private bool Next()
     {
-        foreach (Vehicule vehicule in _racers)
-        {
-            uint i = vehicule.position;
-            if (_track[i] is Turn)
-                i += (uint) vehicule.Acceleration * 10;
-            i += (uint) (vehicule.Speed * 10);
-            
-            if (i >= _track.Length)
-            {
-                return false;
-            }
-            
-            
-            if (vehicule.Move(i, _track[i]))
-            {
-                vehicule.BrokeDown();
-            }
-        }
-        
-        Sort();
-
-        for (uint i = 0; i < _racers.Length; i++)
-        {
-            if (_racers[i] is Bike || _racers[i].IsBroke())
-                continue;
-            
-            for (uint j = 0; j < _racers.Length; j++)
-            {
-                if (_racers[j] is Truck || _racers[j].IsBroke())
-                    break;
-                
-                if (_racers[i] > _racers[j])
-                {
-                    if (rand.Next(10) == 1)
-                    {
-                        _racers[j].BrokeDown();
-                       Console.Write("Oh! Did you see ");
-                       _racers[i].Print();
-                       Console.Write(" just hit ");
-                       _racers[j].Print();
-                       Console.WriteLine(". He is now broke down.");
-                    }
-                }
-            }
-        }
-        
-        return true;
+        throw new NotImplementedException();
     }
 
     public void Play()
