@@ -6,6 +6,7 @@ public abstract class Vehicule
     protected double _accelaration;
     protected double _weight;
     protected uint _broke;
+    public uint position;
     
     public double Speed
     {
@@ -16,9 +17,15 @@ public abstract class Vehicule
         get => _accelaration;
     }
 
-    public Vehicule()
+    public Vehicule(double speed)
     {
         _broke = 0;
+        position = 0;
+    }
+
+    public Vehicule()
+    {
+        throw new NotImplementedException();
     }
     
     public double GetWeight()

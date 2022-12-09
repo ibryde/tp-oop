@@ -2,7 +2,7 @@ namespace Race;
 
 public class Car : Vehicule
 {
-    public Car()
+    public Car(double speed)
     {
         
     }

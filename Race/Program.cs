@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Race
 {
@@ -32,7 +30,7 @@ namespace Race
             ;
             // --------------------------------
             
-            // --------------------------------
+            // ------------------------------
             // Is it fixed now?
 
             list = new int[10];
