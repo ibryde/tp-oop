@@ -4,7 +4,15 @@ namespace Race
 {
     class Program
     {
+
         public static void Main(string[] args)
+        {
+            Race race = new Race(8, new Random());
+            race.Play();
+        }
+        
+        /*
+        public static void Wrong(string[] args)
         {
             // ------------------------------
             // Why is it red underline?
@@ -53,5 +61,6 @@ namespace Race
             ;
             // ------------------------------
         }
+        */
     }
 }
